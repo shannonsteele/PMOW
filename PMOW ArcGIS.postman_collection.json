@@ -1,0 +1,370 @@
+{
+	"info": {
+		"_postman_id": "b63f9dc3-5d87-4415-a4af-be9dbfbae308",
+		"name": "PMOW ArcGIS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "get token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7b835fde-28d8-4d1a-a485-bbd0df95e937",
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"pm.globals.set(\"token\", jsonData.token);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "f3905e00-d09c-44ca-956e-f4042fa873ee",
+						"exec": [
+							"pm.test();"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://www.arcgis.com/sharing/generateToken?username=Shannon_Steele_LearnArcGIS&password=Scooter15534&referer=https://www.arcgis.com&f=json",
+					"protocol": "https",
+					"host": [
+						"www",
+						"arcgis",
+						"com"
+					],
+					"path": [
+						"sharing",
+						"generateToken"
+					],
+					"query": [
+						{
+							"key": "username",
+							"value": "Shannon_Steele_LearnArcGIS"
+						},
+						{
+							"key": "password",
+							"value": "Scooter15534"
+						},
+						{
+							"key": "referer",
+							"value": "https://www.arcgis.com"
+						},
+						{
+							"key": "f",
+							"value": "json"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Submit Job",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "87329228-f37c-49a0-b660-be653dc631f7",
+						"exec": [
+							"let jsonData = pm.response.json();",
+							"pm.globals.set(\"jobId\", jsonData.jobId);",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "8fe050e0-1767-41bd-98c2-6effb62b6b89",
+						"exec": [
+							"pm.test();"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "f",
+							"value": "json",
+							"type": "text"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "text"
+						},
+						{
+							"key": "populate_directions",
+							"value": "true",
+							"type": "text"
+						},
+						{
+							"key": "uturn_policy",
+							"value": "NO_UTURNS",
+							"type": "text"
+						},
+						{
+							"key": "depots",
+							"value": "{\n  \"type\":\"features\",\n  \"features\" : [{\n    \"attributes\" : {\n        \"Name\" : \"Pomona Valley Food Bank\"\n    },\n    \"geometry\" : {\n        \"x\" : -117.746222,\n        \"y\" : 34.06247\n    }\n  }]\n}",
+							"type": "text"
+						},
+						{
+							"key": "routes",
+							"value": "{\n  \"features\": [{\n      \"attributes\": {\n          \"Name\": \"Route 1\",\n          \"Description\": \"vehicle 1\",\n          \"StartDepotName\": \"Pomona Valley Food Bank\",\n          \"EndDepotName\": \"Pomona Valley Food Bank\",\n          \"Capacities\": \"4\",\n          \"MaxOrderCount\": 3,\n          \"MaxTotalTime\": 60\n        }\n    },\n      {\n    \"attributes\": {\n          \"Name\": \"Route 2\",\n          \"Description\": \"vehicle 2\",\n          \"StartDepotName\": \"Pomona Valley Food Bank\",\n          \"EndDepotName\":\"Pomona Valley Food Bank\",\n          \"Capacities\": \"4\",\n          \"MaxOrderCount\": 3,\n          \"MaxTotalTime\": 60\n        }\n      }\n  ]\n}", 
+							"type": "text"
+						},
+						{
+							"key": "orders",
+							"value": "{\n    \"type\": \"features\",\n    \"features\": [{\n        \"attributes\": {\n            \"Name\": \"Shannon's Home\",\n            \"ServiceTime\": 10\n        },\n        \"geometry\": {\n            \"x\": -117.727627,\n            \"y\": 33.970797\n        }\n    },\n    {\n        \"attributes\": {\n            \"Name\": \"Norman's Orchids\",\n            \"ServiceTime\": 10\n        },\n        \"geometry\": {\n            \"x\": -117.698167,\n            \"y\": 34.053478\n        }\n    }\n    ]\n  }\n",
+							"type": "text"
+						},
+						{
+							"key": "default_date",
+							"value": "1523664000000",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://logistics.arcgis.com/arcgis/rest/services/World/VehicleRoutingProblem/GPServer/SolveVehicleRoutingProblem/submitJob",
+					"protocol": "https",
+					"host": [
+						"logistics",
+						"arcgis",
+						"com"
+					],
+					"path": [
+						"arcgis",
+						"rest",
+						"services",
+						"World",
+						"VehicleRoutingProblem",
+						"GPServer",
+						"SolveVehicleRoutingProblem",
+						"submitJob"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Job",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "f",
+							"value": "json",
+							"type": "text"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://logistics.arcgis.com/arcgis/rest/services/World/VehicleRoutingProblem/GPServer/SolveVehicleRoutingProblem/jobs/{{jobId}}",
+					"protocol": "https",
+					"host": [
+						"logistics",
+						"arcgis",
+						"com"
+					],
+					"path": [
+						"arcgis",
+						"rest",
+						"services",
+						"World",
+						"VehicleRoutingProblem",
+						"GPServer",
+						"SolveVehicleRoutingProblem",
+						"jobs",
+						"{{jobId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Out Routs",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "f",
+							"value": "json",
+							"type": "text"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://logistics.arcgis.com/arcgis/rest/services/World/VehicleRoutingProblem/GPServer/SolveVehicleRoutingProblem/jobs/{{jobId}}/results/out_routes",
+					"protocol": "https",
+					"host": [
+						"logistics",
+						"arcgis",
+						"com"
+					],
+					"path": [
+						"arcgis",
+						"rest",
+						"services",
+						"World",
+						"VehicleRoutingProblem",
+						"GPServer",
+						"SolveVehicleRoutingProblem",
+						"jobs",
+						"{{jobId}}",
+						"results",
+						"out_routes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get out stops",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "f",
+							"value": "json",
+							"type": "text"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://logistics.arcgis.com/arcgis/rest/services/World/VehicleRoutingProblem/GPServer/SolveVehicleRoutingProblem/jobs/{{jobId}}/results/out_stops",
+					"protocol": "https",
+					"host": [
+						"logistics",
+						"arcgis",
+						"com"
+					],
+					"path": [
+						"arcgis",
+						"rest",
+						"services",
+						"World",
+						"VehicleRoutingProblem",
+						"GPServer",
+						"SolveVehicleRoutingProblem",
+						"jobs",
+						"{{jobId}}",
+						"results",
+						"out_stops"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get out directions",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "78e413a8-ecca-4a30-82c8-48cd80229c9b",
+						"exec": [
+							"let text = [];",
+							"let outdirections = pm.response.json();",
+							"console.log(outdirections.value[\"features\"])",
+							"",
+							"//for (var i = 0; i < outdirections.values.features.length; i++) {",
+							"//    text += outdirections.values.features.attributes.Text",
+							"//}"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "5223d1b9-13bd-4166-a989-7ae6196e0240",
+						"exec": [
+							"pm.test()"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "https://logistics.arcgis.com/arcgis/rest/services/World/VehicleRoutingProblem/GPServer/SolveVehicleRoutingProblem/jobs/{{jobId}}/results/out_directions?f=json&token={{token}}",
+					"protocol": "https",
+					"host": [
+						"logistics",
+						"arcgis",
+						"com"
+					],
+					"path": [
+						"arcgis",
+						"rest",
+						"services",
+						"World",
+						"VehicleRoutingProblem",
+						"GPServer",
+						"SolveVehicleRoutingProblem",
+						"jobs",
+						"{{jobId}}",
+						"results",
+						"out_directions"
+					],
+					"query": [
+						{
+							"key": "f",
+							"value": "json"
+						},
+						{
+							"key": "token",
+							"value": "{{token}}"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
